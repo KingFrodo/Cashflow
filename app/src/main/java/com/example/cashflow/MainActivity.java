@@ -18,6 +18,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     DecimalFormat df = new DecimalFormat("#.##");
     File file = new File("values.csv");
+    double sum = 0;
+    TextView textView = (TextView) findViewById(R.id.cash);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,14 @@ public class MainActivity extends AppCompatActivity {
             TextView cash = (TextView) findViewById(R.id.cash);
             String cashStr = cash.getText().toString();
             String[] split = cashStr.split("\\s+");
-            
+            String cashValueStr = split[1];
+            double cashValue = Double.parseDouble(df.format(cashValueStr));
+
+            if(ausgabeEinnahmeStr.equals("EINNAHME")){
+                sum = sum + euroDouble;
+                String sumStr = df.format(sum);
+                textView.setText("Cash " + sumStr + " €");
+            }
         }
     }
 }
