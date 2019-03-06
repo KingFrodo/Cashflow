@@ -92,19 +92,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="133dp"
         android:layout_marginTop="258dp"
-        android:text="Cash 00,00 €"
+        android:text="Cash 00.00 €"
         android:textSize="25dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Cash 00.00 €" />
 
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="392dp"
-        android:layout_height="376dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="324dp"
-        android:numColumns="3"
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="424dp"
+        android:layout_height="395dp"
+        android:layout_marginTop="336dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,5 +1,5 @@
 package com.example.cashflow;
 
 public enum Kategorien {
-    NOTHING, AUTO, ÖFFIS, LEBENSMITTEL, FREIZEIT, SONSTIGES
+    NOTHING, AUTO, ÖFFIS, LEBENSMITTEL, FREIZEIT, GEHALT, GESCHENK
 }

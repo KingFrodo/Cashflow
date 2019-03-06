@@ -4,32 +4,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     DecimalFormat df = new DecimalFormat("#.##");
     File file = new File("values.csv");
     double sum = 0;
-    TextView textView = (TextView) findViewById(R.id.cash);
+    TextView textView;
+    List<String> arrayList = new ArrayList<>();
+    ArrayAdapter<String> arrayAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        textView = (TextView) findViewById(R.id.cash);
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
 
         Spinner ausgabeEinnahme = (Spinner) findViewById(R.id.ausgabenEinnahmen);
         ausgabeEinnahme.setAdapter(new ArrayAdapter<EinnahmeAusgabe>(this, android.R.layout.simple_spinner_item, EinnahmeAusgabe.values()));
         Spinner kategorien = (Spinner) findViewById(R.id.kategorie);
         kategorien.setAdapter(new ArrayAdapter<Kategorien>(this, android.R.layout.simple_spinner_item, Kategorien.values()));
+
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(arrayAdapter);
     }
 
     public void okClick(View view){
@@ -38,10 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
         TextView euro = (TextView) findViewById(R.id.euro);
         String euroStr = euro.getText().toString();
-        double euroDouble = Double.parseDouble(df.format(euroStr));
+        double euroDouble = Double.parseDouble(euroStr);
 
         Spinner ausgabeEinnahme = (Spinner) findViewById(R.id.ausgabenEinnahmen);
-        String ausgabeEinnahmeStr = ausgabeEinnahme.toString();
+        String ausgabeEinnahmeStr = ausgabeEinnahme.getSelectedItem().toString();
 
         Spinner kategorie = (Spinner) findViewById(R.id.kategorie);
         String kategorieStr = kategorie.toString();
@@ -50,16 +57,48 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else{
-            TextView cash = (TextView) findViewById(R.id.cash);
-            String cashStr = cash.getText().toString();
-            String[] split = cashStr.split("\\s+");
-            String cashValueStr = split[1];
-            double cashValue = Double.parseDouble(df.format(cashValueStr));
-
             if(ausgabeEinnahmeStr.equals("EINNAHME")){
                 sum = sum + euroDouble;
+                String sumStr = "" + sum;
+                textView.setText("Cash " + sumStr + " €");
+
+                arrayAdapter.clear();
+
+                for (int i = arrayList.size(); i > 0; i--){
+                    arrayList.set(i + 1, arrayList.get(i));
+                    arrayList.set(i, "");
+                }
+
+                arrayList.add(0, dateStr + " | " + "+ " + euroDouble + " | " + kategorieStr);
+
+                for (String string : arrayList) {
+                    arrayAdapter.insert(string, arrayAdapter.getCount());
+                }
+
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            else {
+                sum = sum - euroDouble;
                 String sumStr = df.format(sum);
                 textView.setText("Cash " + sumStr + " €");
+
+                arrayAdapter.clear();
+
+                if (arrayList.size() > 0) {
+                    for (int i = arrayList.size(); i > 0; i--) {
+                        arrayList.set(i + 1, arrayList.get(i));
+                        arrayList.set(i, "");
+                    }
+
+                    arrayList.add(0, dateStr + " | " + "- " + euroDouble + " | " + kategorieStr);
+
+                    for (String string : arrayList) {
+                        arrayAdapter.insert(string, arrayAdapter.getCount());
+                    }
+
+                    arrayAdapter.notifyDataSetChanged();
+                }
             }
         }
     }
