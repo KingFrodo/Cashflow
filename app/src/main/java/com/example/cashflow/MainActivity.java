@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 arrayAdapter.notifyDataSetChanged();
+                //arrayAdapter funktioniert nicht richtig
 
                 try (FileWriter fw = new FileWriter(file)) {
                     fw.write(dateStr + ";");
