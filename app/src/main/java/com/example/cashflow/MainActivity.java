@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                     fw.write("\n");
                     fw.flush();
                     fw.close();
+
+                    //man kann nicht writen
                 } catch(IOException ex){
                     ex.printStackTrace();
                 }
