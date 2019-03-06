@@ -168,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
             ex.printStackTrace();
         }
 
+        //readCSV
+
         Log.e("Read", "Read CSV file    METHOD: readCSV");
     }
 }
