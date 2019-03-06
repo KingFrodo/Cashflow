@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         String ausgabeEinnahmeStr = ausgabeEinnahme.getSelectedItem().toString();
 
         Spinner kategorie = (Spinner) findViewById(R.id.kategorie);
-        String kategorieStr = kategorie.toString();
+        String kategorieStr = kategorie.getSelectedItem().toString();
 
         if(dateStr.equals("") || dateStr.equals(" ") || dateStr.equals(null) || euroStr.equals("") || euroStr.equals(" ") || euroStr.equals(null) || kategorieStr.equals(Kategorien.valueOf("NOTHING"))){
         }
@@ -64,12 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
                 arrayAdapter.clear();
 
-                for (int i = arrayList.size(); i > 0; i--){
-                    arrayList.set(i + 1, arrayList.get(i));
-                    arrayList.set(i, "");
-                }
-
-                arrayList.add(0, dateStr + " | " + "+ " + euroDouble + " | " + kategorieStr);
+                arrayList.add(dateStr + " | " + "+ " + euroDouble + " | " + kategorieStr);
+                Collections.reverse(arrayList);
 
                 for (String string : arrayList) {
                     arrayAdapter.insert(string, arrayAdapter.getCount());
@@ -85,20 +82,14 @@ public class MainActivity extends AppCompatActivity {
 
                 arrayAdapter.clear();
 
-                if (arrayList.size() > 0) {
-                    for (int i = arrayList.size(); i > 0; i--) {
-                        arrayList.set(i + 1, arrayList.get(i));
-                        arrayList.set(i, "");
-                    }
+                arrayList.add(dateStr + " | " + "- " + euroDouble + " | " + kategorieStr);
+                Collections.reverse(arrayList);
 
-                    arrayList.add(0, dateStr + " | " + "- " + euroDouble + " | " + kategorieStr);
-
-                    for (String string : arrayList) {
-                        arrayAdapter.insert(string, arrayAdapter.getCount());
-                    }
-
-                    arrayAdapter.notifyDataSetChanged();
+                for (String string : arrayList) {
+                    arrayAdapter.insert(string, arrayAdapter.getCount());
                 }
+
+                arrayAdapter.notifyDataSetChanged();
             }
         }
     }
