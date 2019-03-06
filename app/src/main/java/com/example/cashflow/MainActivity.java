@@ -2,6 +2,7 @@ package com.example.cashflow;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.listView);
         listView.setAdapter(arrayAdapter);
+
+        Log.e("Create", "App created    METHOD: onCreate");
     }
 
     public void okClick(View view){
@@ -119,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        Log.e("Button Click", "Button got clicked   METHOD: okClick");
     }
 
     public void readCsv(){
@@ -159,5 +164,7 @@ public class MainActivity extends AppCompatActivity {
         catch(IOException ex){
             ex.printStackTrace();
         }
+
+        Log.e("Read", "Read CSV file    METHOD: readCSV");
     }
 }
