@@ -9,7 +9,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        readCsv();
         textView = (TextView) findViewById(R.id.cash);
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
 
@@ -73,6 +78,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 arrayAdapter.notifyDataSetChanged();
+
+                try (FileWriter fw = new FileWriter(file)) {
+                    fw.write(dateStr + ";");
+                    fw.write("+ " + euroDouble + ";");
+                    fw.write(kategorieStr + ";");
+                    fw.write("\n");
+                    fw.flush();
+                    fw.close();
+                } catch(IOException ex){
+                    ex.printStackTrace();
+                }
             }
 
             else {
@@ -90,7 +106,58 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 arrayAdapter.notifyDataSetChanged();
+
+                try (FileWriter fw = new FileWriter(file)) {
+                    fw.write(dateStr + ";");
+                    fw.write("+ " + euroDouble + ";");
+                    fw.write(kategorieStr + ";");
+                    fw.write("\n");
+                    fw.flush();
+                    fw.close();
+                } catch(IOException ex){
+                    ex.printStackTrace();
+                }
             }
+        }
+    }
+
+    public void readCsv(){
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                String[] split = line.split(";");
+                String euroStr = split[1];
+                String date = split[0];
+                String category = split[2];
+
+                arrayList.add(date + " | " + euroStr + " | " + category);
+
+                if(euroStr.contains("+")){
+                    euroStr.replace("+", "");
+                    double euro = Double.parseDouble(euroStr);
+                    sum = sum + euro;
+                }
+
+                else{
+                    euroStr.replace("-", "");
+                    double euro = Double.parseDouble(euroStr);
+                    sum = sum - euro;
+                }
+            }
+
+            Collections.reverse(arrayList);
+
+            for (String string : arrayList) {
+                arrayAdapter.insert(string, arrayAdapter.getCount());
+            }
+
+            arrayAdapter.notifyDataSetChanged();
+        }
+
+
+        catch(IOException ex){
+            ex.printStackTrace();
         }
     }
 }
